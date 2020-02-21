@@ -4,9 +4,36 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Web Components Todo App</title>
-  <script type='module' src='todo-app.js'></script>
+  <script src='./todo-app.js'></script>
+  <link rel="stylesheet" type="text/css" href="./global.css">
+  <style>
+    main {
+      text-align: center;
+      padding: 1em;
+      max-width: 240px;
+      margin: 0 auto;
+      box-shadow: 10px 10px 15px #d0c3c3;
+    }
+
+    h1 {
+      color: #ff3e00;
+      text-transform: uppercase;
+      font-size: 4em;
+      font-weight: 100;
+      margin-bottom: 2rem;
+    }
+
+    @media (min-width: 640px) {
+      main {
+        max-width: 60%;
+      }
+    }
+  </style>
 </head>
 <body>
-  
+  <main>
+    <h1>HELLO TODO!</h1>
+    <todo-app></todo-app>
+  </main>
 </body>
 </html>
