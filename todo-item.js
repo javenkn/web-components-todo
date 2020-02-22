@@ -88,16 +88,28 @@ class TodoItem extends HTMLElement {
         this.$checkbox.removeAttribute('checked');
         this.$label.textContent = '⭕️';
     }
-    
+
     this.$todoInput.value = this._text;
   }
 
   static get observedAttributes() {
-    return ['text'];
+    return ['text', 'checked', 'index'];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    this._text = newValue;
+    switch (name) {
+      case 'text':
+        this._text = newValue;
+        break;
+      case 'checked':
+        this._checked = this.hasAttribute(name);
+        break;
+      case 'index':
+        this._index = parseInt(newValue);
+        break;
+      default:
+        break;
+    }
   }
 }
 

@@ -44,12 +44,17 @@ class TodoApp extends HTMLElement {
     this._todos.forEach((todo, index) => {
       const $todoItem = document.createElement('todo-item');
       $todoItem.setAttribute('text', todo.text);
+
+      if (todo.done) {
+        $todoItem.setAttribute('checked');
+      }
+
+      $todoItem.setAttribute('index', index);
+
+      $todoItem.addEventListener('onRemove', this._removeTodo.bind(this));
+
       this.$todoList.appendChild($todoItem);
     })
-  }
-
-  get todos() {
-    return this._todos;
   }
 
   _addTodo(event) {
@@ -65,6 +70,11 @@ class TodoApp extends HTMLElement {
     this._todos.push(todo);
     this._renderTodoList();
     this.$input.value = '';
+  }
+
+  _removeTodo(e) {
+    this._todos.splice(e.detail, 1);
+    this._renderTodoList();
   }
 }
 
