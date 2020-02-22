@@ -1,3 +1,5 @@
+import './todo-item.js'
+
 const template = document.createElement('template');
 template.innerHTML = `
 <style>
@@ -40,8 +42,8 @@ class TodoApp extends HTMLElement {
     this.$todoList.innerHTML = '';
 
     this._todos.forEach((todo, index) => {
-      let $todoItem = document.createElement('li');
-      $todoItem.innerHTML = todo.text;
+      const $todoItem = document.createElement('todo-item');
+      $todoItem.setAttribute('text', todo.text);
       this.$todoList.appendChild($todoItem);
     })
   }
