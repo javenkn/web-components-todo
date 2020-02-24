@@ -85,6 +85,7 @@ class TodoApp extends HTMLElement {
 
       $todoItem.addEventListener('onRemove', this._removeTodo.bind(this));
       $todoItem.addEventListener('onToggle', this._toggleTodo.bind(this));
+      $todoItem.addEventListener('handleEdit', this._editTodo.bind(this));
       
       this.$todoList.appendChild($todoItem);
     });
@@ -110,9 +111,14 @@ class TodoApp extends HTMLElement {
     this._renderTodoList();
   }
 
+  _editTodo(e) {
+    const {todo, todoIndex} = this._findTodoByIndex(e.detail.index);
+    this._todos[todoIndex] = {...todo, text: e.detail.target.value};
+    this._renderTodoList();
+  }
+
   _toggleTodo(e) {
-    const todoIndex = this._todos.findIndex(td => td.index === e.detail);
-    const todo = this._todos[todoIndex];
+    const {todo, todoIndex} = this._findTodoByIndex(e.detail);
     this._todos[todoIndex] = {...todo, done: !todo.done};
     this._renderTodoList();
   }
@@ -131,6 +137,11 @@ class TodoApp extends HTMLElement {
 
   _indexTodos() {
     this._todos = this._todos.map((td, i) => ({...td, index: i}))
+  }
+
+  _findTodoByIndex(index) {
+    const todoIndex = this._todos.findIndex(td => td.index === index);
+    return { todoIndex, todo: this._todos[todoIndex]};
   }
 }
 

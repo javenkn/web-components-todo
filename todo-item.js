@@ -50,6 +50,8 @@ template.innerHTML = `
 </li>
 `;
 
+const ENTER_KEY = 13;
+
 class TodoItem extends HTMLElement {
   constructor() {
     super();
@@ -64,6 +66,15 @@ class TodoItem extends HTMLElement {
 
     this.$removeButton.addEventListener('click', (e) => {
       this.dispatchEvent(new CustomEvent('onRemove', { detail: this._index }));
+    });
+    this.$todoInput.addEventListener('keydown', (e) => {
+      console.log('alskdjfsad')
+      if (e.which === ENTER_KEY) {
+        e.target.blur();
+      }
+    });
+    this.$todoInput.addEventListener('blur', (e) => {
+      this.dispatchEvent(new CustomEvent('handleEdit', { detail: {index: this._index, target: this.$todoInput} }));
     });
     this.$label.addEventListener('click', (e) => {
       this.dispatchEvent(new CustomEvent('onToggle', { detail: this._index }));
