@@ -81,7 +81,7 @@ class TodoItem extends HTMLElement {
   _renderTodoItem() {
     if (this.hasAttribute('checked')) {
       this.$todoInput.classList.add('done');
-      this.$checkbox.setAttribute('checked', '');
+      this.$checkbox.setAttribute('checked', true);
       this.$label.textContent = '✅';
     } else {
         this.$todoInput.classList.remove('done');
