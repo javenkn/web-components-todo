@@ -50,7 +50,9 @@ class TodoApp extends HTMLElement {
 
     this.$todoList = this._shadowRoot.querySelector('ul');
     this.$input = this._shadowRoot.querySelector('input');
+    
     this.$todoFilter = this._shadowRoot.querySelector('todo-filter');
+    this.$todoFilter.addEventListener('onFilterChange', this._renderTodoList.bind(this, true));
 
     this.$form = this._shadowRoot.querySelector('form');
     this.$form.addEventListener('submit', this._addTodo.bind(this))
@@ -68,13 +70,10 @@ class TodoApp extends HTMLElement {
   }
 
   _renderTodoList() {
+    this._indexTodos();
     this.$todoList.innerHTML = '';
 
-    if (this._todos.length < 1) {
-      this.$todoList.style
-    }
-
-    this._todos.forEach((todo, index) => {
+    this._filteredTodos().forEach(({index, ...todo}) => {
       const $todoItem = document.createElement('todo-item');
       $todoItem.setAttribute('text', todo.text);
 
@@ -86,9 +85,9 @@ class TodoApp extends HTMLElement {
 
       $todoItem.addEventListener('onRemove', this._removeTodo.bind(this));
       $todoItem.addEventListener('onToggle', this._toggleTodo.bind(this));
-
+      
       this.$todoList.appendChild($todoItem);
-    })
+    });
   }
 
   _addTodo(event) {
@@ -112,9 +111,26 @@ class TodoApp extends HTMLElement {
   }
 
   _toggleTodo(e) {
-    const todo = this._todos[e.detail];
-    this._todos[e.detail] = {...todo, done: !todo.done};
+    const todoIndex = this._todos.findIndex(td => td.index === e.detail);
+    const todo = this._todos[todoIndex];
+    this._todos[todoIndex] = {...todo, done: !todo.done};
     this._renderTodoList();
+  }
+
+  _filteredTodos() {
+    const filter = this.$todoFilter.getAttribute('filter');
+    this._indexTodos();
+
+    if (filter === 'active') {
+      return this._todos.filter(td => !td.done);
+    } else if (filter === 'completed') {
+      return this._todos.filter(td => td.done);
+    }
+    return this._todos;
+  }
+
+  _indexTodos() {
+    this._todos = this._todos.map((td, i) => ({...td, index: i}))
   }
 }
 

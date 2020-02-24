@@ -86,6 +86,7 @@ class TodoFilter extends HTMLElement {
   
   attributeChangedCallback(name, oldValue, newValue) {
     this._renderTodoFilter();
+    this.dispatchEvent(new CustomEvent('onFilterChange'));
   }
 }
 
